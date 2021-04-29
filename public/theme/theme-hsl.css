@@ -1,0 +1,82 @@
+/*
+harmony design  https://www.figma.com/file/uLCCXMeiIOIq4BSs9O7IYn/Harmony?node-id=1%3A128
+react css var   https://epicreact.dev/css-variables/
+svelte colors   https://svelte.dev/repl/25f0c3653b89434888292a1f92717e2a?version=3.23.2
+calculate css   https://una.im/css-color-theming/
+
+convert git     https://gist.github.com/mjackson/5311256
+convert tricks  https://css-tricks.com/converting-color-spaces-in-javascript/
+black/white     https://css-tricks.com/switch-font-color-for-different-backgrounds-with-css/
+
+
+
+rgb lighter
+r = min(255, r*1.5)
+g = min(255, g*1.5)
+b = min(255, b*1.5)
+
+rgb complimentary
+r' = max(r,b,g) + min(r,b,g) - r   
+b' = max(r,b,g) + min(r,b,g) - b
+g' = max(r,b,g) + min(r,b,g) - g
+
+*/
+
+html {
+    /*-----base values-----*/
+    --primary-H: 238;
+    --primary-S: 48;
+    --primary-L: 76;
+    
+    --bg-H: 0;
+    --bg-S: 0;
+    --bg-L: 4;
+
+
+    /*-----computing-----*/
+
+    /*Secondary color (complimentary)*/
+    --secondary-H: calc(
+        var(--primary-H) + 180
+    );
+    --secondary-S: var(--primary-S);
+    --secondary-L: var(--primary-L);
+
+
+    /*Light bg*/
+    --lightness: 20;
+
+    --bg-light-H: var(--bg-H);
+    --bg-light-S: var(--bg-S);
+    --bg-light-L: calc(
+        var(--bg-L) + var(--lightness)
+    );
+
+
+    /*text color (depends on bg color)*/
+    --light-treshold: 60;   /* the threshold at which colors are considered "light." 0 - 100*/
+    --text-H: var(--bg-H);
+    --text-S: 0;
+    --text-L: calc(
+        var(--bg-L) - var(--light-treshold) * -100
+    );
+
+
+
+    /*-------final variables!---------*/
+
+    --primary-hsl: var(--primary-H), var(--primary-S), var(--primary-L);
+    --secondary-hsl: var(--secondary-H), var(--secondary-S), var(--secondary-L);
+    --bg-hsl: var(--bg-H), var(--bg-S), var(--bg-L);
+    --bg-light-hsl: var(--bg-light-H), var(--bg-light-S), var(--bg-light-L);
+    --text-hsl: var(--text-H), var(--text-S), var(--text-L);
+    --accent-hsl: 14, 86, 54;
+    
+    --primary: hsl(var(--primary-hsl));
+    --secondary: hsl(var(--secondary-hsl));
+    --bg: hsl(var(--bg-hsl));
+    --bg-light: hsl(var(--bg-light-hsl));
+    --text: hsl(var(--text-hsl));
+    --text-light: hsla(var(--text-hsl), 0.25);
+    --accent: hsl(var(--accent-hsl));
+}

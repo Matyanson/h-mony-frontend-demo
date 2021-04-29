@@ -1,0 +1,90 @@
+/*
+harmony design  https://www.figma.com/file/uLCCXMeiIOIq4BSs9O7IYn/Harmony?node-id=1%3A128
+react css var   https://epicreact.dev/css-variables/
+svelte colors   https://svelte.dev/repl/25f0c3653b89434888292a1f92717e2a?version=3.23.2
+calculate css   https://una.im/css-color-theming/
+
+convert git     https://gist.github.com/mjackson/5311256
+convert tricks  https://css-tricks.com/converting-color-spaces-in-javascript/
+black/white     https://css-tricks.com/switch-font-color-for-different-backgrounds-with-css/
+
+
+
+rgb lighter
+r = min(255, r*1.5)
+g = min(255, g*1.5)
+b = min(255, b*1.5)
+
+rgb complimentary
+r' = max(r,b,g) + min(r,b,g) - r   
+b' = max(r,b,g) + min(r,b,g) - b
+g' = max(r,b,g) + min(r,b,g) - g
+
+*/
+
+html {
+    /*-----base values-----*/
+    --primary-R: 164;
+    --primary-G: 166;
+    --primary-B: 223;
+
+    --bg-R: 22;
+    --bg-G: 22;
+    --bg-B: 22;
+
+
+    /*-----computing-----*/
+
+    /*Secondary color (complimentary)*/
+    --primary-min-max: calc(
+        max(var(--primary-R), var(--primary-G), var(--primary-B)) + 
+        min(var(--primary-R), var(--primary-G), var(--primary-B))
+    );
+    --secondary-R:  calc(
+        var(--primary-min-max) - var(--primary-R)
+    );
+    --secondary-G: calc(
+        var(--primary-min-max) - var(--primary-G)
+    );
+    --secondary-B: calc(
+        var(--primary-min-max) - var(--primary-B)
+    );
+
+
+    /*Light bg*/
+    --lightness: 20;
+
+    --bg-light-R: calc(var(--bg-R) + var(--lightness));
+    --bg-light-G: calc(var(--bg-G) + var(--lightness));
+    --bg-light-B: calc(var(--bg-B) + var(--lightness));
+
+
+    /*text color (depends on bg color)*/
+    --light-treshold: 145;   /* the threshold at which colors are considered "light." 0 - 255 : 127(half)*/
+    --bg-min-max: calc(
+        max(var(--bg-R), var(--bg-G), var(--bg-B)) +
+        min(var(--bg-R), var(--bg-G), var(--bg-B))
+    );
+    --bg-lightness: calc(var(--bg-min-max) / 2);
+
+    --text-val: calc((var(--bg-lightness) - var(--light-treshold)) * -255);
+
+
+
+    /*-------final variables!---------*/
+
+    --primary-rgb: var(--primary-R), var(--primary-G), var(--primary-B);
+    --secondary-rgb: var(--secondary-R), var(--secondary-G), var(--secondary-B);
+    --bg-rgb: var(--bg-R), var(--bg-G), var(--bg-B);
+    --bg-light-rgb: var(--bg-light-R), var(--bg-light-G), var(--bg-light-B);
+    --text-rgb: var(--text-val), var(--text-val), var(--text-val);
+    --accent-rgb: 239, 83, 35;
+    
+    --primary: rgb(var(--primary-rgb));
+    --secondary: rgb(var(--secondary-rgb));
+    --bg: rgb(var(--bg-rgb));
+    --bg-light: rgb(var(--bg-light-rgb));
+    --text: rgb(var(--text-rgb));
+    --text-light: rgba(var(--text-rgb), 0.25);
+    --accent: rgb(var(--accent-rgb));
+}
